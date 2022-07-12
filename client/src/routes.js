@@ -1,0 +1,25 @@
+import React from "react";
+import { Route, Routes, Navigate} from "react-router-dom";
+import {AuthPage} from "./page/AuthPage";
+import {DetailPage} from "./page/DetailPage";
+import {CreatePage} from "./page/CreatePage";
+import {LinksPage} from "./page/LinksPage";
+
+export const useRoutes = isAuthenticated => {
+    if(isAuthenticated){
+        return(
+            <Routes>
+                <Route path="links" element={<LinksPage />} />
+                <Route path="detail/:id" element={<DetailPage />} />
+                <Route path="create" element={<CreatePage />} />
+                <Route  path="*"  element={<Navigate to="create" replace />} />
+            </Routes>
+        )
+    }
+    return (
+        <Routes>
+            <Route path="/" element={<AuthPage />} />
+            <Route  path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+    )
+}
