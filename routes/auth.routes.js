@@ -42,7 +42,7 @@ router.post(
 router.post(
     '/login',
     [
-        check('email','enter correct email').normalizeEmail().isEmail(),
+        check('email','enter correct email').isEmail(),
         check('password','enter password').exists()
     ],
     async (req,res) => {
@@ -56,6 +56,7 @@ router.post(
                 })
             }
             const {email, password} = req.body
+            console.log(email)
             const user = await  User.findOne({email})
 
             if(!user){

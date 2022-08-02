@@ -22,8 +22,20 @@ function App() {
       <Authcontext.Provider value={{token,login,logout,userId, isAuthenticated}}>
       <Router>
           {isAuthenticated && <Navbar />}
-          <div className="container">
-              {routers}
+          <div className="row">
+
+              <div className="col s12 m4 l3">
+                  <div className='container'>
+                  <p className="z-depth-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore odio praesentium sequi tenetur vel? Architecto beatae consectetur cupiditate delectus, dolorum ea eius et eveniet hic illo magnam mollitia nesciunt voluptatibus!50</p>
+                  </div>
+              </div>
+
+              <div className="col s12 m8 l9">
+                  <div className="container">
+                      {routers}
+                  </div>
+              </div>
+
           </div>
       </Router>
       </Authcontext.Provider>

@@ -1,30 +1,25 @@
 const {Router} = require('express')
 const config = require('config')
-const shortid = require('shortid')
-const Link = require('../models/Link')
+const Quizlet = require('../models/Quizlet')
 const auth = require('../middleware/auth.middleware')
 const router = Router()
 
 router.post('/generate', auth, async (req, res) => {
     try{
         console.log('write to quizletlog');
-        const  baseUrl = config.get('baseUrl')
-        const {from} = req.body
+        const {term,definition,language} = req.body
 
-        const code = shortid.generate()
-
-        const existing = await  Link.findOne({from})
+        const existing = await  Quizlet.findOne({term})
 
         if(existing){
-            return res.json({link: existing})
+            return res.json({quiz: existing})
         }
 
-        const to = baseUrl + '/t/' + code
-        const link = new Link({code, to, from, owner: req.user.userId})
+        const quiz = new Quizlet({term, definition , language, owner: req.user.userId})
 
-        await link.save()
+        await quiz.save()
 
-        res.status(201).json({link})
+        res.status(201).json({quiz})
 
     }catch (e){
         res.status(500).json({message:'something went wrong, try one more time'})
@@ -33,8 +28,8 @@ router.post('/generate', auth, async (req, res) => {
 
 router.get('/',auth, async (req, res) => {
     try{
-        const links = await Link.find({owner: req.user.userId})
-        res.json(links)
+        const quizlets = await Quizlet.find({owner: req.user.userId})
+        res.json(quizlets)
     }catch (e){
         res.status(500).json({message:'something went wrong, try one more time'})
     }
@@ -42,8 +37,8 @@ router.get('/',auth, async (req, res) => {
 
 router.get('/:id', auth, async (req,res) => {
     try{
-        const link = await Link.findById(req.params.id)
-        res.json(link)
+        const quiz = await Quizlet.findById(req.params.id)
+        res.json(quiz)
     }catch (e){
         res.status(500).json({message:'something went wrong, try one more time'})
     }
